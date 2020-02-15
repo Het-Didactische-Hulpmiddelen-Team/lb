@@ -25,6 +25,8 @@ print("Listing all files in folder: " + pathToTests)
 print("Searching for files matching this Regex: " + regex)
 print("Outputting structured list to: " + outputfile)
 
+# clear out file
+open(outputfile, 'w').close()
 # open output file for res
 outFile = open(outputfile, "w")
 
