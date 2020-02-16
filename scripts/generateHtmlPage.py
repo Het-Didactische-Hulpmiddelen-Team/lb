@@ -26,6 +26,18 @@ if(len(sys.argv) > 3):
 print("Using "+inputfilepath+" as inputfile")
 print("Generated HTML will be added to the file '"+outputhtmlfilepath+"' inside the element with ID '"+idofelement+"'.")
 
+strToAddToHTML = ""
+with open(inputfilepath,'r') as f:
+    depthOfElementBefore = -1
+    for x in f:
+        x = x.rstrip()
+        if not x: continue
+        
+        gr = re.findall(r"(- )", x)
+        depth = len(gr)
+        
+print(strToAddToHTML)
+
 outputfile = open(outputhtmlfilepath, 'r')
 regex = r"(<div.*id=\w*[\"\']"+idofelement+"[\"\'].*>[\r\n]*)(?:.*[\r\n])*?(.*<\/div>)"
 out = re.sub(regex, r"\1TEST\n\2", outputfile.read())
