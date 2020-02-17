@@ -22,7 +22,7 @@ def hook():
     data = request.data
     url = json.loads(data)["repository"]["url"]
     name = json.loads(data)["repository"]["name"]
-    path = "repos/"
+    path = "../lb_repos/"
 
     if os.path.exists(path+name):
         git.Git(path).pull(url)
