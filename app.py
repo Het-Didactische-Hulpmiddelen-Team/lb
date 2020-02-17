@@ -25,10 +25,8 @@ def hook():
     path = "repos/" + name
 
     if os.path.exists(path):
-        # pull
         git.Git(path).pull(url)
     else:
-        # clone
         os.makedirs(path)
         git.Git(path).clone(url)
 
@@ -43,4 +41,4 @@ def hook():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=81, debug=True)
+    app.run(host="0.0.0.0", port=81, debug=True, processes=4)
