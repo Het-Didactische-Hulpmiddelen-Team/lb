@@ -22,17 +22,17 @@ def hook():
     data = request.data
     url = json.loads(data)["repository"]["url"]
     name = json.loads(data)["repository"]["name"]
-    path = "repos/" + name
+    path = "repos/"
 
-    if os.path.exists(path):
+    if os.path.exists(path+name):
         git.Git(path).pull(url)
     else:
-        os.makedirs(path)
         git.Git(path).clone(url)
 
     #tests rerunnen
     rc = subprocess.call(["./run_tests", str(name)])
     print(rc)
+
     # dingen doen met de output -> omzetten naar juiste / foute tests en doorgeven aan view
 
     #pagina updaten
