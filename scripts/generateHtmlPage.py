@@ -49,14 +49,15 @@ for i in range(0, len(all_lines)):
                 tempParent = ["none"]
             else:
                 if getDepth(all_lines[i - 1]) != 0:
-                    tempParent.pop()
+                    if getDepth(all_lines[i]) != getDepth(all_lines[i - 1]):
+                        tempParent.pop()
             elements.append(lbDir(lastParent(), all_lines[i]))
             tempParent.append(all_lines[i])
         else:
             elements.append(lbFile(lastParent(), all_lines[i]))
+
 for x in elements:
-    print(x.parent + "   " + x.name)
-    
+    print(x.parent + "  <-->  " + x.name)
 def dirToHTML(dr):
     res = "<li><span>"+dr.name.rstrip("\n\r")+"</span><ul>"
     for x in elements:
@@ -75,12 +76,12 @@ for dirr in elements:
         strToAddToHTML += dirToHTML(dirr)
 strToAddToHTML += "</ul>" 
 
-print(strToAddToHTML)
-
 outputfile = open(outputhtmlfilepath, 'r')
 regex = r"(<div.*id=\w*[\"\']"+idofelement+"[\"\'].*>[\r\n]*)(?:.*[\r\n])*?(.*<\/div>)"
-out = re.sub(regex, r"\1TEST\n\2", outputfile.read())
+out = re.sub(regex, r"\1"+strToAddToHTML+r"\n\2", outputfile.read())
 outputfile.close()
 
-# now just print, later change out file
-print(out)
+# write to file
+outf = open(outputhtmlfilepath, "w")
+outf.write(out)
+outf.close()
