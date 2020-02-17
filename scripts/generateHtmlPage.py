@@ -1,6 +1,8 @@
 import sys
 import os
 import re
+from lbdir import lbDir
+from lbfile import lbFile
 
 inputfilepath = ""
 outputhtmlfilepath = ""
@@ -26,35 +28,53 @@ if(len(sys.argv) > 3):
 print("Using "+inputfilepath+" as inputfile")
 print("Generated HTML will be added to the file '"+outputhtmlfilepath+"' inside the element with ID '"+idofelement+"'.")
 
-strToAddToHTML = "<ul>"
+strToAddToHTML = ""
 f = open(inputfilepath,'r')
-all_lines_variable = f.readlines()
+all_lines = f.readlines()
 f.close()
+elements = []
 
+# inlezen van de file
 def getDepth(line):
-    return len(re.findall(r"(- )", line))
+    return len(re.findall(r"(- )",line))
 
-for i in range(0, len(all_lines_variable)-1):
-    l = all_lines_variable[i].rstrip()
-    depth = getDepth(l)
-    print(depth)
-    if depth == 0:
-        strToAddToHTML += "<li> <span>"+l+"</span>"
-    elif depth < getDepth(all_lines_variable[i-1]):
-        for y in range(getDepth(all_lines_variable[i-1]) - depth): 
-            strToAddToHTML += "</ul></li>"
-        strToAddToHTML += "<li><span>"+l+"</span>"
-    elif depth == getDepth(all_lines_variable[i-1]) + 1:
-        if depth == getDepth(all_lines_variable[i+1]):
-            strToAddToHTML += "<ul><li>"+l+"</li>"
-        elif depth == getDepth(all_lines_variable[i+1]) - 1:
-            strToAddToHTML += "<li><span>"+l+"</span>"
-    elif depth == getDepth(all_lines_variable[i-1]):
-        strToAddToHTML += "<li>"+l+"</li>"
-        if depth > getDepth(all_lines_variable[i+1]):
-            strToAddToHTML += "</ul> </li>"
- 
-strToAddToHTML += "</ul>"
+tempParent = ["none"]
+def lastParent():
+    return tempParent[len(tempParent) - 1]
+
+for i in range(0, len(all_lines)):
+    if i < len(all_lines)-1:
+        if getDepth(all_lines[i]) < getDepth(all_lines[i + 1]):
+            if getDepth(all_lines[i]) == 0:
+                tempParent = ["none"]
+            else:
+                if getDepth(all_lines[i - 1]) != 0:
+                    tempParent.pop()
+            elements.append(lbDir(lastParent(), all_lines[i]))
+            tempParent.append(all_lines[i])
+        else:
+            elements.append(lbFile(lastParent(), all_lines[i]))
+for x in elements:
+    print(x.parent + "   " + x.name)
+    
+def dirToHTML(dr):
+    res = "<li><span>"+dr.name.rstrip("\n\r")+"</span><ul>"
+    for x in elements:
+        if dr.name in x.parent:
+            if x.__class__.__name__ == "lbFile":
+                res += "<li>"+x.name.rstrip("\n\r")+"</li>"
+            elif x.__class__.__name__ == "lbDir":
+                res += dirToHTML(x)
+    res += "</ul></li>"
+    return res
+
+strToAddToHTML += "<ul>"
+for dirr in elements:
+    if dirr.__class__.__name__ == "lbDir" and dirr.parent == "none":
+        # top mapke, 0 depth
+        strToAddToHTML += dirToHTML(dirr)
+strToAddToHTML += "</ul>" 
+
 print(strToAddToHTML)
 
 outputfile = open(outputhtmlfilepath, 'r')
