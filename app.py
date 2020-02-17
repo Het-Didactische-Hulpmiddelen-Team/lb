@@ -30,7 +30,7 @@ def hook():
         git.Git(path).clone(url)
 
     #tests rerunnen
-    rc = subprocess.call(["./run_tests", str(name)])
+    rc = subprocess.call([path+"run_tests", str(name)])
     print(rc)
 
     # dingen doen met de output -> omzetten naar juiste / foute tests en doorgeven aan view
