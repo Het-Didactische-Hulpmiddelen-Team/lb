@@ -1,7 +1,7 @@
 import os
-
+import subprocess
+import git
 from flask import Flask, render_template, request, jsonify, json
-import gitpython
 
 app = Flask(__name__)
 
@@ -21,7 +21,8 @@ def hook():
     #code clonen
     data = request.data
     url = json.loads(data)["repository"]["url"]
-    path = "repos/" + json.loads(data)["repository"]["full_name"]
+    name = json.loads(data)["repository"]["name"]
+    path = "repos/" + name
 
     if os.path.exists(path):
         # pull
@@ -32,6 +33,9 @@ def hook():
         git.Git(path).clone(url)
 
     #tests rerunnen
+    rc = subprocess.call(["./test.sh", str(name)])
+    print(rc)
+    # dingen doen met de output -> omzetten naar juiste / foute tests en doorgeven aan view
 
     #pagina updaten
     return "success"
