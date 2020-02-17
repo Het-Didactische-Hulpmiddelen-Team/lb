@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, jsonify, json
-from pip._internal.vcs import git
+import gitpython
 
 app = Flask(__name__)
 
