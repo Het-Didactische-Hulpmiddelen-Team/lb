@@ -25,7 +25,7 @@ def hook():
     path = "../lb_repos/"
 
     if os.path.exists(path+name):
-        git.Git(path).pull(url)
+        git.Git(path+name).pull(url)
     else:
         git.Git(path).clone(url)
 
