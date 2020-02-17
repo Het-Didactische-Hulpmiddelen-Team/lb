@@ -26,16 +26,35 @@ if(len(sys.argv) > 3):
 print("Using "+inputfilepath+" as inputfile")
 print("Generated HTML will be added to the file '"+outputhtmlfilepath+"' inside the element with ID '"+idofelement+"'.")
 
-strToAddToHTML = ""
-with open(inputfilepath,'r') as f:
-    depthOfElementBefore = -1
-    for x in f:
-        x = x.rstrip()
-        if not x: continue
-        
-        gr = re.findall(r"(- )", x)
-        depth = len(gr)
-        
+strToAddToHTML = "<ul>"
+f = open(inputfilepath,'r')
+all_lines_variable = f.readlines()
+f.close()
+
+def getDepth(line):
+    return len(re.findall(r"(- )", line))
+
+for i in range(0, len(all_lines_variable)-1):
+    l = all_lines_variable[i].rstrip()
+    depth = getDepth(l)
+    print(depth)
+    if depth == 0:
+        strToAddToHTML += "<li> <span>"+l+"</span>"
+    elif depth < getDepth(all_lines_variable[i-1]):
+        for y in range(getDepth(all_lines_variable[i-1]) - depth): 
+            strToAddToHTML += "</ul></li>"
+        strToAddToHTML += "<li><span>"+l+"</span>"
+    elif depth == getDepth(all_lines_variable[i-1]) + 1:
+        if depth == getDepth(all_lines_variable[i+1]):
+            strToAddToHTML += "<ul><li>"+l+"</li>"
+        elif depth == getDepth(all_lines_variable[i+1]) - 1:
+            strToAddToHTML += "<li><span>"+l+"</span>"
+    elif depth == getDepth(all_lines_variable[i-1]):
+        strToAddToHTML += "<li>"+l+"</li>"
+        if depth > getDepth(all_lines_variable[i+1]):
+            strToAddToHTML += "</ul> </li>"
+ 
+strToAddToHTML += "</ul>"
 print(strToAddToHTML)
 
 outputfile = open(outputhtmlfilepath, 'r')
