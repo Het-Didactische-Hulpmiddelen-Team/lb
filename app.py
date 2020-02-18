@@ -1,6 +1,4 @@
-import os
-import subprocess
-import git
+import os, subprocess, git, xmltodict
 from flask import Flask, render_template, request, jsonify, json
 
 app = Flask(__name__)
@@ -8,6 +6,13 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/test/add", methods=["POST"])
+def add_test():
+    data = xmltodict.parse(request.data)
+    parsed = json.dumps(data)
+    with open("tset.txt", 'w') as outfile:
+        outfile.write(parsed)
 
 @app.route("/student/<username>")
 def detail(username):
@@ -30,8 +35,11 @@ def hook():
         git.Git(path).clone(url)
 
     #tests rerunnen
-    rc = subprocess.call([path+"run_tests", str(name)])
+    os.chdir("/root/eindwerk/lb_repos")
+    rc = subprocess.call(["run_tests", str(name)])
     print(rc)
+    # teruggaan voor de zekerheid
+    os.chdir("/root/eindwerk/lb")
 
     # dingen doen met de output -> omzetten naar juiste / foute tests en doorgeven aan view
 
