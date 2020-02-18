@@ -14,6 +14,8 @@ def add_test():
     with open("tset.txt", 'w') as outfile:
         outfile.write(parsed)
 
+    return "success"
+
 @app.route("/student/<username>")
 def detail(username):
     # naam ophalen uit andere flask backend op :80 + database call voor alle tests op te halen
