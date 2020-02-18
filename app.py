@@ -1,7 +1,14 @@
-import os, subprocess, git, xmltodict
+import os, subprocess, git, xmltodict, requests
 from flask import Flask, render_template, request, jsonify, json
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
+
+app.config['MYSQL_USER'] = 'dht'
+app.config['MYSQL_PASSWORD'] = 'mvghetdhtmvghetdht'
+app.config['MYSQL_DB'] = 'dht'
+app.config['MYSQL_HOST'] = 'localhost'
+mysql = MySQL(app)
 
 @app.route("/")
 def index():
@@ -11,8 +18,28 @@ def index():
 def add_test():
     data = xmltodict.parse(request.data)
     parsed = json.dumps(data)
-    with open("tset.txt", 'w') as outfile:
-        outfile.write(parsed)
+
+    # naam opzoeken
+    url = "http://localhost:82/user/%s" % username
+    data = jsonify(requests.get(url=url))
+    name = data[0][0]
+
+    # lijst maken
+    results = []
+    for test_case in parsed["Catch"]["Group"]["TestCase"]:
+        results.append((test_case["@name"], test_case["@filename"], test_case["OverallResult"]))
+    results = str(jsonify(results)).replace('"', '\\"')
+
+    # percentage berekenen
+    failed = parsed["Catch"]["Group"]["OverallResults"]["@failures"]
+    success = parsed["Catch"]["Group"]["OverallResults"]["@successes"]
+    percent = int(success / (success + failed))
+
+    # insert into db
+    cursor = mysql.connection.cursor()
+    cursor.execute("insert into student (name, data, percent) values (%s, %s, %s) on duplicate key update data=values(data), percent=values(percent);", (name, results, percent))
+    mysql.connection.commit()
+    cursor.close()
 
     return "success"
 
