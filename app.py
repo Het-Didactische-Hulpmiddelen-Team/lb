@@ -20,6 +20,7 @@ def add_test():
     parsed = json.dumps(data)
 
     # naam opzoeken
+    username = parsed["Catch"]["@name"]
     url = "http://localhost:82/user/%s" % username
     data = jsonify(requests.get(url=url))
     name = data[0][0]
