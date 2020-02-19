@@ -54,7 +54,8 @@ def add_test():
     overall_results = root.find("OverallResults")
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
-    percent = int((success / (success + failed)) * 100)
+    # hardcoded totaal hier is naar kijken mss
+    percent = int((success / (5994)) * 100)
 
     # insert into db
     cursor = mysql.connection.cursor()
