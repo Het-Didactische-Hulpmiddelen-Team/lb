@@ -35,7 +35,6 @@ def add_test():
     name = username
     url = "http://localhost:82/user/%s" % username
     rq = requests.get(url=url)
-    return rq.text
     if rq.text != "[]":
         data = json.loads(rq.text)
         name = data[0][0]
