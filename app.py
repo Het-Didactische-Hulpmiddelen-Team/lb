@@ -44,7 +44,7 @@ def add_test():
     for i, testcase in enumerate(group):
         dic = {}
         with open("test", "w") as outfile:
-            outfile.write(testcase+"\n"+testcase.attrib+"\n")
+            outfile.write(testcase.attrib+"\n")
         dic["name"] = testcase.attrib["name"]
         dic["filename"] = testcase.attrib["filename"]
         dic["result"] = testcase.find("OverallResult").attrib["success"]
