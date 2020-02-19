@@ -1,4 +1,5 @@
-import os, subprocess, git, xmltodict, requests
+import os, subprocess, git, requests
+import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
@@ -6,39 +7,54 @@ app = Flask(__name__)
 
 app.config['MYSQL_USER'] = 'dht'
 app.config['MYSQL_PASSWORD'] = 'mvghetdhtmvghetdht'
-app.config['MYSQL_DB'] = 'dht'
+app.config['MYSQL_DB'] = 'lb'
 app.config['MYSQL_HOST'] = 'localhost'
 mysql = MySQL(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    # compleet overzicht van alle studenten met hun percentage geslaagde tests
+    # haalt de naam
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT name, percent FROM student order by name")
+    users = cursor.fetchall()
+    cursor.close()
+    return render_template("index.html", users=users)
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
-    data = xmltodict.parse(request.data)
-    parsed = json.dumps(data)[0]
+    # deze endpoint wordt opgeroepen door het run_tests script en voegt de huidige status
+    # van de tests van een student toe aan de databank
+    # https://docs.python.org/2/library/xml.etree.elementtree.html
+    root = et.fromstring(request.data)
+    group = root.find("Group")
 
     # naam opzoeken
-    username = parsed[0][0]
-    name = ""
+    username = group.attrib["name"]
+    name = username
     url = "http://localhost:82/user/%s" % username
     rq = requests.get(url=url)
     if rq.text != "[]":
-        data = jsonify(rq.text)
+        data = json.loads(rq.text)
         name = data[0][0]
-    else:
-        name = username
 
-    # lijst maken
-    results = []
-    for test_case in parsed[0][1][2]:
-        results.append((test_case[2], test_case[0], test_case[3][0]))
-    results = str(jsonify(results)).replace('"', '\\"')
+    # json maken van alle testcases, alleen nodige data overhouden
+    results = {}
+    for i, testcase in enumerate(group):
+        dic = {}
+        with open("test", "w") as outfile:
+            outfile.write(str(testcase.attrib)+"\n")
+        dic["name"] = testcase.attrib["name"]
+        dic["filename"] = testcase.attrib["filename"]
+        dic["result"] = testcase.find("OverallResult").attrib["success"]
+        results[i] = dic
+    results = json.dumps(results)
 
     # percentage berekenen
-    failed = parsed[0][1][1][1]
-    success = parsed[0][1][1][2]
+    overall_results = root.find("OverallResults")
+    success = overall_results.attrib["successes"]
+    failed = overall_results.attrib["failures"]
     percent = int(success / (success + failed))
 
     # insert into db
@@ -51,14 +67,17 @@ def add_test():
 
 @app.route("/student/<username>")
 def detail(username):
-    # naam ophalen uit andere flask backend op :80 + database call voor alle tests op te halen
+    # detailpagina die de status van elke test individueel laat zien
+
     name = "Stijn Taelemans"
     return render_template("detail.html", data=(name))
 
 @app.route("/hook", methods=["POST"])
 def hook():
-    #dingen doen met request.data
-    #code clonen
+    # wordt opgeroepen bij elke push in de organisatie
+    # runt script dat c++ code compileert en test (zie ~/eindwerk/lb_repos/run_tests)
+
+    # code clonen
     data = request.data
     url = json.loads(data)["repository"]["url"]
     name = json.loads(data)["repository"]["name"]
@@ -75,10 +94,6 @@ def hook():
     print(rc)
     # teruggaan voor de zekerheid
     os.chdir("/root/eindwerk/lb")
-
-    # dingen doen met de output -> omzetten naar juiste / foute tests en doorgeven aan view
-
-    #pagina updaten
     return "success"
 
 
