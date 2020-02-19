@@ -17,7 +17,7 @@ def index():
 @app.route("/test/add", methods=["POST"])
 def add_test():
     data = xmltodict.parse(request.data)
-    parsed = json.dumps(data)
+    parsed = json.dumps(data)[0]
 
     with open("tsetfile", "w") as outfile:
         outfile.write(parsed)
