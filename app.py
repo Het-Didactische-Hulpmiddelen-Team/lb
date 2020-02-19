@@ -19,24 +19,21 @@ def add_test():
     data = xmltodict.parse(request.data)
     parsed = json.dumps(data)[0]
 
-    with open("tsetfile", "w") as outfile:
-        outfile.write(parsed)
-
     # naam opzoeken
-    username = parsed["Catch"]["@name"]
+    username = parsed[0][0]
     url = "http://localhost:82/user/%s" % username
     data = jsonify(requests.get(url=url))
     name = data[0][0]
 
     # lijst maken
     results = []
-    for test_case in parsed["Catch"]["Group"]["TestCase"]:
-        results.append((test_case["@name"], test_case["@filename"], test_case["OverallResult"]))
+    for test_case in parsed[0][1][2]:
+        results.append((test_case[2], test_case[0], test_case[3][0]))
     results = str(jsonify(results)).replace('"', '\\"')
 
     # percentage berekenen
-    failed = parsed["Catch"]["Group"]["OverallResults"]["@failures"]
-    success = parsed["Catch"]["Group"]["OverallResults"]["@successes"]
+    failed = parsed[0][1][1][1]
+    success = parsed[0][1][1][2]
     percent = int(success / (success + failed))
 
     # insert into db
