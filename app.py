@@ -17,7 +17,7 @@ def index():
 @app.route("/test/add", methods=["POST"])
 def add_test():
     data = xmltodict.parse(request.data)
-    parsed = json.loads(data)
+    parsed = json.dumps(data)
 
     # naam opzoeken
     username = parsed["Catch"]["@name"]
