@@ -12,7 +12,11 @@ mysql = MySQL(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student order by name")
+    users = cursor.fetchall()
+    cursor.close()
+    return render_template("index.html", users=users)
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
