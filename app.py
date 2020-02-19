@@ -1,4 +1,5 @@
-import os, subprocess, git, xmltodict, requests
+import os, subprocess, git, requests
+import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
@@ -25,30 +26,33 @@ def index():
 def add_test():
     # deze endpoint wordt opgeroepen door het run_tests script en voegt de huidige status
     # van de tests van een student toe aan de databank
-
-    data = xmltodict.parse(request.data)
-    parsed = json.dumps(data)[0]
+    # https://docs.python.org/2/library/xml.etree.elementtree.html
+    root = et.fromstring(request.data)
+    group = root.find("Group")
 
     # naam opzoeken
-    username = parsed[0][0]
-    name = ""
+    username = group.attrib["name"]
+    name = username
     url = "http://localhost:82/user/%s" % username
     rq = requests.get(url=url)
     if rq.text != "[]":
         data = json.loads(rq.text)
         name = data[0][0]
-    else:
-        name = username
 
-    # lijst maken
-    results = []
-    for test_case in parsed[0][1][2]:
-        results.append((test_case[2], test_case[0], test_case[3][0]))
-    results = str(jsonify(results)).replace('"', '\\"')
+    # json maken van alle testcases, alleen nodige data overhouden
+    results = {}
+    for i, testcase in enumerate(group):
+        dic = {}
+        dic["name"] = testcase.attrib["name"]
+        dic["filename"] = testcase.attrib["filename"]
+        dic["result"] = testcase.find("OverallResult").attrib["success"]
+        results[i] = dic
+    results = json.dumps(results)
 
     # percentage berekenen
-    failed = parsed[0][1][1][1]
-    success = parsed[0][1][1][2]
+    overall_results = root.find("OverallResults")
+    success = overall_results.attrib["successes"]
+    failed = overall_results.attrib["failures"]
     percent = int(success / (success + failed))
 
     # insert into db
