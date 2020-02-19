@@ -19,7 +19,7 @@ def add_test():
     data = xmltodict.parse(request.data)
     parsed = json.dumps(data)
 
-    with open("tsetfile", "r") as outfile:
+    with open("tsetfile", "w") as outfile:
         outfile.write(parsed)
 
     # naam opzoeken
