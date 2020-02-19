@@ -1,3 +1,4 @@
+/*
 function get() {
     $.get("https://jsonplaceholder.typicode.com/users", function (data) {
 
@@ -85,7 +86,7 @@ function get() {
         table.appendChild(tableBody)
         contentContainer.append(table)
     })
-}
+}*/
 
 function filter() {
     var input, filter, table, tr, td, i, txtValue;
