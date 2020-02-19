@@ -43,11 +43,10 @@ def add_test():
     results = {}
     for i, testcase in enumerate(group):
         dic = {}
-        with open("test", "w") as outfile:
-            outfile.write(str(testcase.attrib)+"\n")
-        dic["name"] = testcase.attrib["name"]
-        dic["filename"] = testcase.attrib["filename"]
-        dic["result"] = testcase.find("OverallResult").attrib["success"]
+        if testcase.tag == "TestCase":
+            dic["name"] = testcase.attrib["name"]
+            dic["filename"] = testcase.attrib["filename"]
+            dic["result"] = testcase.find("OverallResult").attrib["success"]
         results[i] = dic
     results = json.dumps(results)
 
