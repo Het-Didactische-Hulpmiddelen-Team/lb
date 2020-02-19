@@ -21,9 +21,14 @@ def add_test():
 
     # naam opzoeken
     username = parsed[0][0]
+    name = ""
     url = "http://localhost:82/user/%s" % username
-    data = jsonify(requests.get(url=url))
-    name = data[0][0]
+    rq = requests.get(url=url)
+    if rq.text != "[]":
+        data = jsonify(rq.text)
+        name = data[0][0]
+    else:
+        name = username
 
     # lijst maken
     results = []
