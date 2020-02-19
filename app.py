@@ -19,6 +19,9 @@ def add_test():
     data = xmltodict.parse(request.data)
     parsed = json.dumps(data)
 
+    with open("tsetfile", "r") as outfile:
+        outfile.write(parsed)
+
     # naam opzoeken
     username = parsed["Catch"]["@name"]
     url = "http://localhost:82/user/%s" % username
