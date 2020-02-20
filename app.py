@@ -78,9 +78,10 @@ def detail(username):
     percent = res[0][2]
     tests = json.loads(res[0][1])
     vals = tests.values()
+    
     files = []
     for x in vals:
-        files.append(list(x.values()))
+        files.append(list(x.values())[2])
 
     return render_template("detail.html", name=name, tests=files, percent=percent)
 
