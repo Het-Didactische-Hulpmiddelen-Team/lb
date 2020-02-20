@@ -72,10 +72,11 @@ def detail(username):
     
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\';")
-    tests = cursor.fetchall()
+    res = cursor.fetchall()
     cursor.close()
     
-    percent = 20
+    percent = res[2]
+    tests = res[1]
     return render_template("detail.html", name=name, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
