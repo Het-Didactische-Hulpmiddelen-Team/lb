@@ -14,7 +14,9 @@
 
     <ul>
         {% if tests %}
-            <li>{{tests}}</li>
+        {% for test in tests %}
+            <li>{{test}}</li>
+        {% endfor %}
         {% endif %}
     </ul>
 </body>
