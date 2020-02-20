@@ -81,7 +81,7 @@ def detail(username):
     
     files = []
     for x in vals:
-        files.append(list(x.values())[2])
+        files.append(len(list(x.values())))
 
     return render_template("detail.html", name=name, tests=files, percent=percent)
 
