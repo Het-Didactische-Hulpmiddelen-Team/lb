@@ -94,7 +94,7 @@ def detail(username):
         else:
             if head not in container:
                 container[head] = {}
-            build_nested_helper('/'.join(tail), tail, container[head])
+            build_nested_helper('/'.join(tail), tail[0], container[head])
 
     def build_nested(paths):
         container = {}
