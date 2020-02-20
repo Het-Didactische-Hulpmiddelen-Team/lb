@@ -82,8 +82,8 @@ def detail(username):
     files = []
     for i, x in enumerate(vals):
         if i != len(vals) - 1:
-            files.append(x["filename"])
-
+            files.append(re.sub('./tests/', "", x["filename"]) )
+    files.sort()
     return render_template("detail.html", name=name, tests=files, percent=percent)
 
 @app.route("/hook", methods=["POST"])
