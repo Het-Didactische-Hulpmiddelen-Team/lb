@@ -68,8 +68,12 @@ def add_test():
 @app.route("/student/<username>")
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
+    url = "http://localhost:82/user/%s" % username
+    rq = requests.get(url=url)
+    if rq.text != "[]":
+        data = json.loads(rq.text)
+        name = data[0][0]
 
-    name = "Stijn Taelemans"
     return render_template("detail.html", data=(name))
 
 @app.route("/hook", methods=["POST"])
