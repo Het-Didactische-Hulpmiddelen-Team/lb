@@ -81,7 +81,7 @@ def detail(username):
     def genStructure(lijst):
         files = []
         for x in lijst:
-            files.append(re.sub(r"./tests/", "", x[2]))
+            files.append(re.sub(r"./tests/", "", x[0]['filename']))
         return files
     
     files = genStructure(tests)
