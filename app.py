@@ -84,7 +84,28 @@ def detail(username):
         if i != len(vals) - 1:
             files.append(re.sub('./tests/', "", x["filename"]) )
     files.sort()
-    return render_template("detail.html", name=name, tests=files, percent=percent)
+    
+    def build_nested_helper(path, text, container):
+        segs = path.split('/')
+        head = segs[0]
+        tail = segs[1:]
+        if not tail:
+            container[head] = text
+        else:
+            if head not in container:
+                container[head] = {}
+            build_nested_helper('/'.join(tail), text, container[head])
+
+    def build_nested(paths):
+        container = {}
+        for path in paths:
+            build_nested_helper(path, path, container)
+        return container
+
+
+    d = build_nested(files)
+    
+    return render_template("detail.html", name=name, ul=d, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():

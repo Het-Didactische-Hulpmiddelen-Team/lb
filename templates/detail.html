@@ -12,12 +12,6 @@
     <h1>PVM Tests van {{name}}</h1>
     <h2>{{percent}}% van tests slaagt</h2>
 
-    <ul>
-        {% if tests %}
-        {% for test in tests %}
-            <li>{{test}}</li>
-        {% endfor %}
-        {% endif %}
-    </ul>
+    {{ul}}
 </body>
 </html>
