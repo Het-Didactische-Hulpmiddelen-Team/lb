@@ -103,8 +103,24 @@ def detail(username):
         return container
     d = build_nested(files)
     
+    def dictHasDict(dic):
+        for d in dic:
+            if isinstance(d, dict):
+                return True
+        return False
     
-    
+    def HTMLHelper(item):
+        for dictt in item:
+            if not dictHasDict(dictt):
+                res += "<li><span>"+dictt.key()+"</span> <ul>"
+                for x in list(dictt.value()):
+                    res += "<li>"+x+"</li>"
+                res += "</ul></li>"
+    def toHTML(dr):
+        res = "<ul>"
+        res += HTMLHelper(dr)     
+        res += "</ul>"
+        
     return render_template("detail.html", name=name, ul=d, percent=percent)
 
 @app.route("/hook", methods=["POST"])

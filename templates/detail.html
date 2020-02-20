@@ -12,6 +12,14 @@
     <h1>PVM Tests van {{name}}</h1>
     <h2>{{percent}}% van tests slaagt</h2>
 
-    {{ul}}
+    <ul>
+    {%- for key, value in ul.items() recursive%}
+         {%-if not ".cpp" in key %}
+             {{loop(value.items())}}
+         {%- else  %}
+             <li>{{value}}</li>
+         {%- endif %}
+     {%- endfor %}
+    </ul>
 </body>
 </html>
