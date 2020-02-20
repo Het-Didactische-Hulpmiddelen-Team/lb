@@ -32,11 +32,11 @@
                         </td>
                         <td>
                             <div class="progress">
-                                {% if (user[1] < 25) %}
+                                {% if (user[1] < 33) %}
                                     <div class="progress-bar bg-danger"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>
-                                {% elif (user[1] < 50) %}
-                                    <div class="progress-bar bg-info"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>          
-                                {% elif (user[1] < 75) %}
+                                {% elif (user[1] < 66) %}
+                                    <div class="progress-bar bg-warning"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>          
+                                {% elif (user[1] < 99) %}
                                     <div class="progress-bar bg-success"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>
                                 {% else %}
                                     <div class="progress-bar"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>
