@@ -9,21 +9,15 @@
     <title>Overview | lem-onade</title>
 </head>
 <body>
-    <h1>PVM Tests van Stijn Taelemans</h1>
-    <h2>15% van tests slaagt</h2>
+    <h1>PVM Tests van {{name}}</h1>
+    <h2>{{percent}}% van tests slaagt</h2>
 
     <ul>
-        <li class="sidebar-dropdown">
-            <span>onderdeel-01</span>
-            <ul class="sidebar-submenu">
-                <li>
-                    <span>subonderdeel-01</span>
-                    <ul>
-                        <li>test-01</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
+        {% if tests %}
+        {% for item in tests %}
+            <li>{{item}}</li>
+        {% endfor %}
+        {% endif %}
     </ul>
 </body>
 </html>

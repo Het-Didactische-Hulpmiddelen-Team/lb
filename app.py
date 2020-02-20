@@ -68,9 +68,15 @@ def add_test():
 @app.route("/student/<username>")
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
-
-    name = "Stijn Taelemans"
-    return render_template("detail.html", data=(name))
+    name = username
+    
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student WHERE name="+name)
+    tests = cursor.fetchall()
+    cursor.close()
+    
+    percent = 20
+    return render_template("detail.html", name=name, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():
