@@ -75,7 +75,7 @@ def detail(username):
     res = cursor.fetchall()
     cursor.close()
     
-    percent = res[2]
+    percent = res[0]
     tests = res[1]
     return render_template("detail.html", name=name, tests=tests, percent=percent)
 
