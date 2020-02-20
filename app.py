@@ -80,8 +80,9 @@ def detail(username):
     vals = tests.values()
     
     files = []
-    for i in range(0, len(vals) - 2):
-        files.append(vals[i]["filename"])
+    for i, x in enumerate(vals):
+        if i != len(vals) - 1:
+            files.append(x["filename"])
 
     return render_template("detail.html", name=name, tests=files, percent=percent)
 
