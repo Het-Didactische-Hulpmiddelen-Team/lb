@@ -79,15 +79,14 @@ def detail(username):
     tests = json.loads(res[0][1])
     tests = tests.values()
     
-    temp = ""
     def genStructure(lijst):
         files = []
         for x in lijst:
             files.append(re.sub(r"./tests/", "", x["filename"]))
-            temp += re.sub(r"./tests/", "", x["filename"]) + " - "
-        
-    genStructure(tests)
-    return render_template("detail.html", name=temp, tests=tests, percent=percent)
+        return files
+    
+    files = genStructure(tests)
+    return render_template("detail.html", name=files, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():
