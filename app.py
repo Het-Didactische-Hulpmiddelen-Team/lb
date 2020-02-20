@@ -1,4 +1,4 @@
-import os, subprocess, git, requests
+import os, subprocess, git, requests, re
 import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
@@ -68,13 +68,16 @@ def add_test():
 @app.route("/student/<username>")
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
-    url = "http://localhost:82/user/%s" % username
-    rq = requests.get(url=url)
-    if rq.text != "[]":
-        data = json.loads(rq.text)
-        name = data[0][0]
+    name = re.sub("%20", " ", username)
 
-    return render_template("detail.html", data=(name))
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\';")
+    res = cursor.fetchall()
+    cursor.close()
+
+    percent = res[0][2]
+    tests = json.loads(res[0][1])
+    return render_template("detail.html", name=name, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():
