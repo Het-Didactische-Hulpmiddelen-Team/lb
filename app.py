@@ -69,12 +69,12 @@ def add_test():
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
     name = re.sub("%20", " ", username)
-    
+
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\';")
     res = cursor.fetchall()
     cursor.close()
-    
+
     percent = res[0][2]
     tests = json.loads(res[0][1])
     
