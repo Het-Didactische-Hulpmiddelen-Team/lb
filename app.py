@@ -76,7 +76,7 @@ def detail(username):
     cursor.close()
     
     percent = res[0][2]
-    tests = res[0][1]
+    tests = json.loads(res[0][1])
     return render_template("detail.html", name=name, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
