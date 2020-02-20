@@ -44,7 +44,7 @@ def add_test():
     for i, testcase in enumerate(group):
         dic = {}
         if testcase.tag == "TestCase":
-            dic["name"] = testcase.attrib["name"]
+            dic["name"] = testcase.attrib["name"].replace('"', '\\"').replace("'", "\\'")
             dic["filename"] = testcase.attrib["filename"]
             dic["result"] = testcase.find("OverallResult").attrib["success"]
         results[i] = dic
