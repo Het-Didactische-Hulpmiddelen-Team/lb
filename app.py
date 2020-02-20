@@ -78,10 +78,10 @@ def detail(username):
     percent = res[0][2]
     tests = json.loads(res[0][1])
     vals = tests.values()
-    gr = []
+    files = []
     for x in vals:
-        gr.append(json.loads(x)["filename"])
-    return render_template("detail.html", name=name, tests=vals, percent=percent)
+        files.append(x["name"])
+    return render_template("detail.html", name=name, tests=files, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():
