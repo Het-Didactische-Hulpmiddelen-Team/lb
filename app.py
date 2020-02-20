@@ -75,8 +75,8 @@ def detail(username):
     res = cursor.fetchall()
     cursor.close()
     
-    percent = res[0]
-    tests = res[1]
+    percent = res[0][2]
+    tests = res[0][1]
     return render_template("detail.html", name=name, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
