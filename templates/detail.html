@@ -15,7 +15,7 @@
     <ul>
         {% if tests %}
         {% for test in tests %}
-            <li>{{test}}</li>
+            <li>{{test["filename"]}}</li>
         {% endfor %}
         {% endif %}
     </ul>
