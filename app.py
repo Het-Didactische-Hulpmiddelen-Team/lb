@@ -1,4 +1,4 @@
-import os, subprocess, git, requests
+import os, subprocess, git, requests, re
 import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
@@ -68,10 +68,10 @@ def add_test():
 @app.route("/student/<username>")
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
-    name = username
+    name = re.sub("%20", " ", username)
     
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE name=\'PVM Tester1\';")
+    cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\';")
     tests = cursor.fetchall()
     cursor.close()
     
