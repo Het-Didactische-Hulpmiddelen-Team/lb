@@ -13,13 +13,18 @@
     <h2>{{percent}}% van tests slaagt</h2>
 
     <ul>
-    {%- for key, value in ul.items() recursive%}
-         {%-if not ".cpp" in key %}
-             {{loop(value.items())}}
-         {%- else  %}
-             <li>{{value}}</li>
-         {%- endif %}
-     {%- endfor %}
+        {%- for key, value in ul.items() recursive%}
+            {%-if not ".cpp" in key %}
+                <li>
+                    <span>{{key}}</span>
+                    <ul>
+                        {{loop(value.items())}}
+                    </ul>
+                </li>   
+            {%- else  %}
+                <li>{{value}}</li>
+            {%- endif %}
+        {%- endfor %}
     </ul>
 </body>
 </html>
