@@ -71,7 +71,7 @@ def detail(username):
     name = username
     
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\'")
+    cursor.execute("SELECT * FROM student WHERE name=\'PVM Tester1\';")
     tests = cursor.fetchall()
     cursor.close()
     
