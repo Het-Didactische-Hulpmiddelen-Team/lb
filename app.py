@@ -1,4 +1,4 @@
-import os, subprocess, git, requests
+import os, subprocess, git, requests, re
 import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
@@ -48,13 +48,13 @@ def add_test():
             dic["filename"] = testcase.attrib["filename"]
             dic["result"] = testcase.find("OverallResult").attrib["success"]
         results[i] = dic
-    results = json.dumps(results)
 
     # percentage berekenen
     overall_results = root.find("OverallResults")
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
-    percent = int((success / (success + failed)) * 100)
+    # hardcoded totaal hier is naar kijken mss
+    percent = int((success / (5994)) * 100)
 
     # insert into db
     cursor = mysql.connection.cursor()
@@ -67,9 +67,18 @@ def add_test():
 @app.route("/student/<username>")
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
+    name = re.sub("%20", " ", username)
 
-    name = "Stijn Taelemans"
-    return render_template("detail.html", data=(name))
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\';")
+    res = cursor.fetchall()
+    cursor.close()
+
+    percent = res[0][2]
+    tests = json.loads(res[0][1])
+    vals = tests.values()
+
+    return render_template("detail.html", name=name, tests=tests, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():
