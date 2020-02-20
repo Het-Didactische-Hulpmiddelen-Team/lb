@@ -14,11 +14,7 @@
 
     <ul>
         {% if tests %}
-        {% for test in tests.values() %}
-            <li>{{test["name"]}}</li>
-            <li>{{test["result"]}}</li>
-            <li>{{test["filename"]}}</li>
-        {% endfor %}
+            <li>{{tests}}</li>
         {% endif %}
     </ul>
 </body>
