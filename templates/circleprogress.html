@@ -1,9 +1,10 @@
 <!-- data = (text, actual, max) -->
-{% if (user[1] < 33) %}
+{% set percent = ((data[0]|int / data[1]|int) * 100)|int %}
+{% if (percent < 33) %}
   {% set color = "bg-danger" %}
-{% elif (user[1] < 66) %}
+{% elif (percent < 66) %}
   {% set color = "bg-warning" %}
-{% elif (user[1] <= 100) %}
+{% elif (percent <= 100) %}
   {% set color = "bg-success" %}
 {% else %}
   {% set color = "" %}
@@ -11,7 +12,6 @@
 <div class="col-xl-3 col-lg-6 mb-4">
   <div class="bg-white rounded-lg p-5 shadow">
     <h2 class="h6 font-weight-bold text-center mb-4">{{text}}</h2> <!--text -->
-    {% set percent = ((data[0]|int / data[1]|int) * 100)|int %}
     <div class="progress mx-auto" data-value='{{ percent }}'>
       <span class="progress-left">
                     <span class="progress-bar {{ color }}"></span>
