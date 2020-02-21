@@ -16,10 +16,20 @@ def index():
     # haalt de naam
 
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT name, percent FROM student order by name")
+    cursor.execute("SELECT name, assertions, testcases, testfiles FROM student order by name")
     users = cursor.fetchall()
     cursor.close()
-    return render_template("index.html", users=users)
+    totalassertions = getTotalAssertions()
+    totalcases = getTotalTestCases()
+    totalfiles = getTotalTestFiles()
+    users2 = []
+    for i,stud in enumerate(users):
+        name = users[i][0]
+        assertionsperc = int(users[i][1]) / totalassertions
+        caseperc = int(users[i][2]) / totalcases
+        filesperc = int(users[i][3]) / totalfiles
+        users2.append([name, assertionsperc, caseperc, filesperc])
+    return render_template("index.html", users=users2)
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
@@ -40,23 +50,25 @@ def add_test():
 
     # json maken van alle testcases, alleen nodige data overhouden
     results = {}
+    cases = 0
     for i, testcase in enumerate(group):
         dic = {}
         if testcase.tag == "TestCase":
             dic["name"] = testcase.attrib["name"].replace('"', '\\"').replace("'", "\\'")
             dic["filename"] = testcase.attrib["filename"]
             dic["result"] = testcase.find("OverallResult").attrib["success"]
+            cases += 1
         results[i] = dic
     results = json.dumps(results)
 
     overall_results = root.find("OverallResults")
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
-    cases = len(results) - 2
+    files = int(overall_results.attrib["compiledFiles"])
 
     # insert into db
     cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO student(name, data, assertions, testcases) values (%s,%s,%s,%s) ON DUPLICATE KEY UPDATE data=values(data), assertions=values(assertions), testcases=values(testcases);", (name, results, success, cases))
+    cursor.execute("INSERT INTO student(name, data, assertions, testcases, testfiles) values (%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE data=values(data), assertions=values(assertions), testcases=values(testcases), testfiles=values(testfiles);", (name, results, success, cases, files))
     mysql.connection.commit()
     cursor.close()
 
