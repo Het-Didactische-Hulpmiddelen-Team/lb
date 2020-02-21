@@ -132,7 +132,7 @@ def hook():
         git.Git(path).clone(url)
 
     #tests rerunnen
-    rc = subprocess.call(["/root/eindwerk/run_tests", str(name)])
+    rc = subprocess.call(["/root/eindwerk/lb_repos/run_tests", str(name)])
     return "success"
 
 if __name__ == "__main__":
