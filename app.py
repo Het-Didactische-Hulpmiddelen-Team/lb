@@ -55,7 +55,7 @@ def add_test():
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
     # hardcoded totaal hier is naar kijken mss
-    percent = int((success / (5994)) * 100)
+    percent = int((success / (getTotalAssertions())) * 100)
 
     # insert into db
     cursor = mysql.connection.cursor()
@@ -64,6 +64,13 @@ def add_test():
     cursor.close()
 
     return "success"
+
+def getTotalAssertions():
+    return 5994
+def getTotalTestCases():
+    return 252
+def getTotalTestFiles():
+    return 32
 
 @app.route("/student/<username>")
 def detail(username):
