@@ -3,13 +3,28 @@ import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
-app = Flask(__name__)
+assertions = 5994
+testcases = 252
+testfiles = 32
 
+app = Flask(__name__)
 app.config['MYSQL_USER'] = 'dht'
 app.config['MYSQL_PASSWORD'] = 'mvghetdhtmvghetdht'
 app.config['MYSQL_DB'] = 'lb'
 app.config['MYSQL_HOST'] = 'localhost'
 mysql = MySQL(app)
+
+def loadParams():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
+    res = cursor.fetchall()
+    cursor.close()
+
+    assertions = res[0][2]
+    testcases = res[0][3]
+    tesfiles = res[0][4]
+    
+app.before_first_request(loadParams)
 
 @app.route("/")
 def index():
@@ -135,8 +150,6 @@ def hook():
     # teruggaan voor de zekerheid
     os.chdir("/root/eindwerk/lb")
     return "success"
-
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81, debug=True)
