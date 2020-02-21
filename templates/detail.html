@@ -29,11 +29,18 @@
     </div>
 
     <ul>
-        {% if tests %}
-        {% for test in tests %}
-            <li>{{test}}</li>
-        {% endfor %}
-        {% endif %}
+        {%- for key, value in ul.items() recursive%}
+            {%-if not ".cpp" in key %}
+                <li>
+                    <span>{{key}}</span>
+                    <ul>
+                        {{loop(value.items())}}
+                    </ul>
+                </li>   
+            {%- else  %}
+                <li>{{value}}</li>
+            {%- endif %}
+        {%- endfor %}
     </ul>
 
     <script type="text/javascript" src="../static/js/detail.js"></script>

@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
-
 app.config['MYSQL_USER'] = 'dht'
 app.config['MYSQL_PASSWORD'] = 'mvghetdhtmvghetdht'
 app.config['MYSQL_DB'] = 'lb'
@@ -20,7 +19,7 @@ def index():
     cursor.execute("SELECT name, percent FROM student order by name")
     users = cursor.fetchall()
     cursor.close()
-    return render_template("index.html", users=users)
+    return render_template("index.html", users=users, a=getTotal("assertions"))
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
@@ -55,7 +54,7 @@ def add_test():
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
     # hardcoded totaal hier is naar kijken mss
-    percent = int((success / (5994)) * 100)
+    percent = int((success / (getTotal("assertions"))) * 100)
 
     # insert into db
     cursor = mysql.connection.cursor()
@@ -64,6 +63,13 @@ def add_test():
     cursor.close()
 
     return "success"
+
+def getTotal(param):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT "+param+" FROM student WHERE name=\'Fréderik Vogels\';")
+    res = cursor.fetchall()
+    cursor.close()
+    return res
 
 @app.route("/student/<username>")
 def detail(username):
@@ -78,10 +84,32 @@ def detail(username):
     percent = res[0][2]
     tests = json.loads(res[0][1])
     vals = tests.values()
-    gr = []
-    for x in vals:
-        gr.append(json.loads(x)["filename"])
-    return render_template("detail.html", name=name, tests=vals, percent=percent)
+    
+    files = []
+    for i, x in enumerate(vals):
+        if i != len(vals) - 1:
+            files.append(re.sub('./tests/', "", x["filename"]) )
+    files.sort()
+    
+    def build_nested_helper(path, text, container):
+        segs = path.split('/')
+        head = segs[0]
+        tail = segs[1:]
+        if not tail:
+            container[head] = text
+        else:
+            if head not in container:
+                container[head] = {}
+            build_nested_helper('/'.join(tail), tail[0], container[head])
+
+    def build_nested(paths):
+        container = {}
+        for path in paths:
+            build_nested_helper(path, path, container)
+        return container
+    d = build_nested(files)
+    
+    return render_template("detail.html", name=name, ul=d, percent=percent)
 
 @app.route("/hook", methods=["POST"])
 def hook():
@@ -102,8 +130,6 @@ def hook():
     #tests rerunnen
     rc = subprocess.call(["/root/eindwerk/run_tests", str(name)])
     return "success"
-
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81, debug=True)
