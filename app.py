@@ -86,7 +86,7 @@ def detail(username):
 @app.route("/hook", methods=["POST"])
 def hook():
     # wordt opgeroepen bij elke push in de organisatie
-    # runt script dat c++ code compileert en test (zie ~/eindwerk/lb_repos/run_tests)
+    # runt script dat c++ code compileert en test (zie /root/eindwerk/lb_repos/run_tests)
 
     # code clonen
     data = request.data
@@ -100,11 +100,7 @@ def hook():
         git.Git(path).clone(url)
 
     #tests rerunnen
-    os.chdir("/root/eindwerk/lb_repos")
-    rc = subprocess.call(["run_tests", str(name)])
-    print(rc)
-    # teruggaan voor de zekerheid
-    os.chdir("/root/eindwerk/lb")
+    rc = subprocess.call(["/root/eindwerk/run_tests", str(name)])
     return "success"
 
 
