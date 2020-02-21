@@ -25,9 +25,9 @@ def index():
     users2 = []
     for i,stud in enumerate(users):
         name = users[i][0]
-        assertionsperc = int(users[i][1]) / totalassertions
-        caseperc = int(users[i][2]) / totalcases
-        filesperc = int(users[i][3]) / totalfiles
+        assertionsperc = int(int(users[i][1]) / totalassertions * 100)
+        caseperc = int(int(users[i][2]) / totalcases * 100)
+        filesperc = int(int(users[i][3]) / totalfiles * 100)
         users2.append([name, assertionsperc, caseperc, filesperc])
     return render_template("index.html", users=users2)
 
