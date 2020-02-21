@@ -20,9 +20,10 @@ def loadParams():
     res = cursor.fetchall()
     cursor.close()
 
-    assertions = res[0][2]
-    testcases = res[0][3]
-    tesfiles = res[0][4]
+    # VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
+    assertions = res[0][3]
+    testcases = res[0][4]
+    tesfiles = res[0][5]
     
 app.before_first_request(loadParams)
 
@@ -81,11 +82,11 @@ def add_test():
     return "success"
 
 def getTotalAssertions():
-    return 5994
+    return assertions
 def getTotalTestCases():
-    return 252
+    return testcases
 def getTotalTestFiles():
-    return 32
+    return testfiles
 
 @app.route("/student/<username>")
 def detail(username):
