@@ -4,8 +4,8 @@ from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
 assertions = 10000000
-testcases = 252
-testfiles = 32
+testcases = 1000000
+testfiles = 1000000
 
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'dht'
@@ -36,7 +36,7 @@ def index():
     cursor.execute("SELECT name, percent FROM student order by name")
     users = cursor.fetchall()
     cursor.close()
-    return render_template("index.html", users=users)
+    return render_template("index.html", users=users, a=assertions, c=testcases, f=testfiles)
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
