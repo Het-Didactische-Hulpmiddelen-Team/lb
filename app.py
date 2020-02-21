@@ -19,7 +19,7 @@ def index():
     cursor.execute("SELECT name, percent FROM student order by name")
     users = cursor.fetchall()
     cursor.close()
-    return render_template("index.html", users=users, a=getTotal("assertions"))
+    return render_template("index.html", users=users)
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
@@ -49,16 +49,14 @@ def add_test():
         results[i] = dic
     results = json.dumps(results)
 
-    # percentage berekenen
     overall_results = root.find("OverallResults")
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
-    # hardcoded totaal hier is naar kijken mss
-    percent = int((success / (getTotal("assertions"))) * 100)
+    cases = len(results) - 2
 
     # insert into db
     cursor = mysql.connection.cursor()
-    cursor.execute("insert into student (name, data, percent) values (%s, %s, %s) on duplicate key update data=values(data), percent=values(percent);", (name, results, percent))
+    cursor.execute("insert into student (name, data, assertions, testcases) values (%s, %s, %s, %s) on duplicate key update data=values(data), assertions=values(assertions), testcases=values(testcases);", (name, results, success, testcases))
     mysql.connection.commit()
     cursor.close()
 
@@ -69,7 +67,13 @@ def getTotal(param):
     cursor.execute("SELECT "+param+" FROM student WHERE name=\'Fréderik Vogels\';")
     res = cursor.fetchall()
     cursor.close()
-    return res
+    return res[0][0]
+def getTotalAssertions():
+    return getTotal("assertions")
+def getTotalTestCases():
+    return getTotal("testcases")
+def getTotalTestFiles():
+    return getTotal("testfiles")
 
 @app.route("/student/<username>")
 def detail(username):
