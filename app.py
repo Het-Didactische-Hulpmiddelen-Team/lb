@@ -145,8 +145,10 @@ if __name__ == "__main__":
     cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
     res = cursor.fetchall()
     cursor.close()
-
+    print(res)
     # VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
     assertions = res[0][3]
+    print(assertions)
     testcases = res[0][4]
+    print(res[0][4])
     tesfiles = res[0][5]
