@@ -14,18 +14,15 @@ app.config['MYSQL_DB'] = 'lb'
 app.config['MYSQL_HOST'] = 'localhost'
 mysql = MySQL(app)
 
-def loadParams():
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
-    res = cursor.fetchall()
-    cursor.close()
+cursor = mysql.connection.cursor()
+cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
+res = cursor.fetchall()
+cursor.close()
 
-    # VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
-    assertions = res[0][3]
-    testcases = res[0][4]
-    tesfiles = res[0][5]
-    
-app.before_first_request(loadParams)
+# VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
+assertions = res[0][3]
+testcases = res[0][4]
+tesfiles = res[0][5]
 
 @app.route("/")
 def index():
