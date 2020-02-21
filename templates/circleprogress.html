@@ -12,13 +12,13 @@
                     <span class="progress-bar border-danger"></span>
       </span>
       <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-        <div class="h2 font-weight-bold">{{int((data[1] / data[2]) * 100)}}<sup class="small">%</sup></div> <!--percentage -->
+        <div class="h2 font-weight-bold">{{int((data[0] / data[1]) * 100)}}<sup class="small">%</sup></div> <!--percentage -->
       </div>
     </div>
 
     <div class="row text-center mt-4">
       <div class="col-6 border-right">
-        <span class="small text-gray">{{data[1]}} / {{data[2]}} assertions</span>  <!-- actual, max -->
+        <span class="small text-gray">{{data[0]}} / {{data[1]}} assertions</span>  <!-- actual, max -->
       </div>
     </div>
 
