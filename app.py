@@ -3,10 +3,6 @@ import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
-assertions = 10000000
-testcases = 1000000
-testfiles = 1000000
-
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'dht'
 app.config['MYSQL_PASSWORD'] = 'mvghetdhtmvghetdht'
@@ -23,7 +19,7 @@ def index():
     cursor.execute("SELECT name, percent FROM student order by name")
     users = cursor.fetchall()
     cursor.close()
-    return render_template("index.html", users=users, a=assertions, c=testcases, f=testfiles)
+    return render_template("index.html", users=users, a=getTotal("assertions"))
 
 @app.route("/test/add", methods=["POST"])
 def add_test():
@@ -58,7 +54,7 @@ def add_test():
     success = int(overall_results.attrib["successes"])
     failed = int(overall_results.attrib["failures"])
     # hardcoded totaal hier is naar kijken mss
-    percent = int((success / (getTotalAssertions())) * 100)
+    percent = int((success / (getTotal("assertions"))) * 100)
 
     # insert into db
     cursor = mysql.connection.cursor()
@@ -68,12 +64,12 @@ def add_test():
 
     return "success"
 
-def getTotalAssertions():
-    return assertions
-def getTotalTestCases():
-    return testcases
-def getTotalTestFiles():
-    return testfiles
+def getTotal(param):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT "+param+" FROM student WHERE name=\'Fréderik Vogels\';")
+    res = cursor.fetchall()
+    cursor.close()
+    return res
 
 @app.route("/student/<username>")
 def detail(username):
@@ -141,16 +137,3 @@ def hook():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81, debug=True)
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
-    res = cursor.fetchall()
-    cursor.close()
-    file = open("out.txt", "w")
-    file.writeline(res)
-    # VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
-    assertions = res[0][3]
-    file.writeline(assertions)
-    testcases = res[0][4]
-    file.writeline(res[0][4])
-    tesfiles = res[0][5]
-    file.close()
