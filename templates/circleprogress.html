@@ -12,7 +12,7 @@
                     <span class="progress-bar border-danger"></span>
       </span>
       <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-        <div class="h2 font-weight-bold">{{int((data[0] / data[1]) * 100)}}<sup class="small">%</sup></div> <!--percentage -->
+        <div class="h2 font-weight-bold">{{((data[0]|int / data[1]|int) * 100)|int}}<sup class="small">%</sup></div> <!--percentage -->
       </div>
     </div>
 
