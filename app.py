@@ -27,10 +27,7 @@ def add_test():
     # van de tests van een student toe aan de databank
     # https://docs.python.org/2/library/xml.etree.elementtree.html
     root = et.fromstring(request.data)
-    with open("xml_log", "w") as outfile:
-        outfile.write(request.data)
     group = root.find("Group")
-    print(group, file=sys.stderr)
 
     # naam opzoeken
     username = group.attrib["name"]
