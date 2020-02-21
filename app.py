@@ -80,7 +80,7 @@ def detail(username):
     name = urllib.unquote(username)
 
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE name=%s;", (name))
+    cursor.execute("SELECT * FROM student WHERE name=%s;", name)
     res = cursor.fetchall()
     cursor.close()
 
