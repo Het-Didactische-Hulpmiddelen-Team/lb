@@ -19,13 +19,16 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col" class="w-75">Progress</th>
+                <th scope="col" class="w-25">Assertions</th>
+                <th scope="col" class="w-25">Testcases</th>
+                <th scope="col" class="w-25">Testfiles</th>
             </tr>
         </thead>
         <tbody>
             {% if users %}
                 {% for user in users %}
                     <tr>
+                        <td>{{user}}</td>
                         <td scope="row" class="text-wrap">
                             <a href="student/{{user[0]}}" class="text-body">{{user[0]}}</a>
                         </td>
@@ -35,10 +38,36 @@
                                     <div class="progress-bar bg-danger"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>
                                 {% elif (user[1] < 66) %}
                                     <div class="progress-bar bg-warning"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>          
-                                {% elif (user[1] < 99) %}
+                                {% elif (user[1] <= 100) %}
                                     <div class="progress-bar bg-success"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>
                                 {% else %}
                                     <div class="progress-bar"  role="progressbar" style="width: {{user[1]}}%" aria-valuenow="{{user[1]}}" aria-valuemin="0" aria-valuemax="100">{{user[1]}}%</div>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress">
+                                {% if (user[2] < 33) %}
+                                    <div class="progress-bar bg-danger"  role="progressbar" style="width: {{user[2]}}%" aria-valuenow="{{user[2]}}" aria-valuemin="0" aria-valuemax="100">{{user[2]}}%</div>
+                                {% elif (user[2] < 66) %}
+                                    <div class="progress-bar bg-warning"  role="progressbar" style="width: {{user[2]}}%" aria-valuenow="{{user[2]}}" aria-valuemin="0" aria-valuemax="100">{{user[2]}}%</div>          
+                                {% elif (user[2] <= 100) %}
+                                    <div class="progress-bar bg-success"  role="progressbar" style="width: {{user[2]}}%" aria-valuenow="{{user[2]}}" aria-valuemin="0" aria-valuemax="100">{{user[2]}}%</div>
+                                {% else %}
+                                    <div class="progress-bar"  role="progressbar" style="width: {{user[2]}}%" aria-valuenow="{{user[2]}}" aria-valuemin="0" aria-valuemax="100">{{user[2]}}%</div>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress">
+                                {% if (user[3] < 33) %}
+                                    <div class="progress-bar bg-danger"  role="progressbar" style="width: {{user[3]}}%" aria-valuenow="{{user[3]}}" aria-valuemin="0" aria-valuemax="100">{{user[3]}}%</div>
+                                {% elif (user[3] < 66) %}
+                                    <div class="progress-bar bg-warning"  role="progressbar" style="width: {{user[3]}}%" aria-valuenow="{{user[3]}}" aria-valuemin="0" aria-valuemax="100">{{user[3]}}%</div>          
+                                {% elif (user[3] <= 100) %}
+                                    <div class="progress-bar bg-success"  role="progressbar" style="width: {{user[3]}}%" aria-valuenow="{{user[3]}}" aria-valuemin="0" aria-valuemax="100">{{user[3]}}%</div>
+                                {% else %}
+                                    <div class="progress-bar"  role="progressbar" style="width: {{user[3]}}%" aria-valuenow="{{user[3]}}" aria-valuemin="0" aria-valuemax="100">{{user[3]}}%</div>
                                 {% endif %}
                             </div>
                         </td>
