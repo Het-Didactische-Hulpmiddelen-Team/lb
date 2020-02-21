@@ -14,16 +14,6 @@ app.config['MYSQL_DB'] = 'lb'
 app.config['MYSQL_HOST'] = 'localhost'
 mysql = MySQL(app)
 
-cursor = mysql.connection.cursor()
-cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
-res = cursor.fetchall()
-cursor.close()
-
-# VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
-assertions = res[0][3]
-testcases = res[0][4]
-tesfiles = res[0][5]
-
 @app.route("/")
 def index():
     # compleet overzicht van alle studenten met hun percentage geslaagde tests
@@ -151,3 +141,12 @@ def hook():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81, debug=True)
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
+    res = cursor.fetchall()
+    cursor.close()
+
+    # VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
+    assertions = res[0][3]
+    testcases = res[0][4]
+    tesfiles = res[0][5]
