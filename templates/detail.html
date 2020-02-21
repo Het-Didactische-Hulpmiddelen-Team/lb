@@ -14,7 +14,7 @@
     <h1>PVM Tests van {{name}}</h1>
     <h2>{{percent}}% van tests slaagt</h2>
 
-    <div>
+    <div class="d-flex flex-row justify-content-center">
         <!-- data = (actual, max) -->
         {% with data=assertions_data, text="Assertions" %}
             {% include 'circleprogress.html' %}
