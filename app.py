@@ -3,7 +3,7 @@ import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
-assertions = 5994
+assertions = 10000000
 testcases = 252
 testfiles = 32
 
