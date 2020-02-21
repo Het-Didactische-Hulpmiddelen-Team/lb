@@ -1,11 +1,11 @@
 <!-- data = (text, actual, max) -->
 {% set percent = ((data[0]|int / data[1]|int) * 100)|int %}
 {% if (percent < 33) %}
-  {% set color = "bg-danger" %}
+  {% set color = "border-danger" %}
 {% elif (percent < 66) %}
-  {% set color = "bg-warning" %}
+  {% set color = "border-warning" %}
 {% elif (percent <= 100) %}
-  {% set color = "bg-success" %}
+  {% set color = "border-success" %}
 {% else %}
   {% set color = "" %}
 {% endif %}
