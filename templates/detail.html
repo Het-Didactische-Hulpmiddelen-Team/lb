@@ -15,15 +15,16 @@
     <h2>{{percent}}% van tests slaagt</h2>
 
     <div>
-        {% with data=assertions_data %}
+        <!-- data = (actual, max) -->
+        {% with data=assertions_data, text="Assertions" %}
             {% include 'circleprogress.html' %}
         {% endwith %}
 
-        {% with data=testcases_data %}
+        {% with data=testcases_data, text="Test Cases" %}
             {% include 'circleprogress.html' %}
         {% endwith %}
 
-        {% with data=testfiles_data %}
+        {% with data=testfiles_data, text="Test Files" %}
             {% include 'circleprogress.html' %}
         {% endwith %}
     </div>

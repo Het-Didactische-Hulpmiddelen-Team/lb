@@ -1,5 +1,6 @@
 import os, subprocess, git, requests, re,sys
 import xml.etree.ElementTree as et
+import urllib.parse as urllib
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
@@ -19,15 +20,12 @@ def index():
     cursor.execute("SELECT name, assertions, testcases, testfiles FROM student order by name")
     users = cursor.fetchall()
     cursor.close()
-    totalassertions = getTotalAssertions()
-    totalcases = getTotalTestCases()
-    totalfiles = getTotalTestFiles()
     users2 = []
     for i,stud in enumerate(users):
         name = users[i][0]
-        assertionsperc = int(int(users[i][1]) / totalassertions * 100)
-        caseperc = int(int(users[i][2]) / totalcases * 100)
-        filesperc = int(int(users[i][3]) / totalfiles * 100)
+        assertionsperc = int(int(users[i][1]) / getTotalAssertions() * 100)
+        caseperc = int(int(users[i][2]) / getTotalTestCases() * 100)
+        filesperc = int(int(users[i][3]) / getTotalTestFiles() * 100)
         users2.append([name, assertionsperc, caseperc, filesperc])
     return render_template("index.html", users=users2)
 
@@ -68,36 +66,24 @@ def add_test():
 
     # insert into db
     cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO student(name, data, assertions, testcases, testfiles) values (%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE data=values(data), assertions=values(assertions), testcases=values(testcases), testfiles=values(testfiles);", (name, results, success, cases, files))
+    cursor.execute("INSERT INTO student(name, data, assertions, testcases, testfiles) values (%s,%s,%s,%s,%s) "
+                   "ON DUPLICATE KEY UPDATE data=values(data), assertions=values(assertions), "
+                   "testcases=values(testcases), testfiles=values(testfiles);", (name, results, success, cases, files))
     mysql.connection.commit()
     cursor.close()
 
     return "success"
 
-def getTotal(param):
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT "+param+" FROM student WHERE name=\'Fréderik Vogels\';")
-    res = cursor.fetchall()
-    cursor.close()
-    return res[0][0]
-def getTotalAssertions():
-    return getTotal("assertions")
-def getTotalTestCases():
-    return getTotal("testcases")
-def getTotalTestFiles():
-    return getTotal("testfiles")
-
 @app.route("/student/<username>")
 def detail(username):
     # detailpagina die de status van elke test individueel laat zien
-    name = re.sub("%20", " ", username)
+    name = urllib.unquote(username)
 
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM student WHERE name=\'"+name+"\';")
+    cursor.execute("SELECT * FROM student WHERE name=%s;", (name))
     res = cursor.fetchall()
     cursor.close()
 
-    percent = res[0][2]
     tests = json.loads(res[0][1])
     vals = tests.values()
     
@@ -106,7 +92,8 @@ def detail(username):
         if i != len(vals) - 1:
             files.append(re.sub('./tests/', "", x["filename"]) )
     files.sort()
-    
+
+    # twee onderstaande functions dienen voor alle testfiles in een dict
     def build_nested_helper(path, text, container):
         segs = path.split('/')
         head = segs[0]
@@ -123,9 +110,16 @@ def detail(username):
         for path in paths:
             build_nested_helper(path, path, container)
         return container
-    d = build_nested(files)
-    
-    return render_template("detail.html", name=name, ul=d, percent=percent)
+    ul = build_nested(files)
+
+    assertions_data = (res[0][2], getTotalAssertions())
+    testcases_data = (res[0][3], getTotalTestCases())
+    testfiles_data = (res[0][4], getTotalTestFiles())
+
+    return render_template("detail.html", name=name, ul=ul,
+                           assertions_data=assertions_data,
+                           testcases_data=testcases_data,
+                           testfiles_data=testfiles_data)
 
 @app.route("/hook", methods=["POST"])
 def hook():
@@ -146,6 +140,19 @@ def hook():
     #tests rerunnen
     rc = subprocess.call(["/root/eindwerk/lb_repos/run_tests", str(name)])
     return "success"
+
+def getTotal(param):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT "+param+" FROM student WHERE name=\'Frédéric Vogels\';")
+    res = cursor.fetchall()
+    cursor.close()
+    return res[0][0]
+def getTotalAssertions():
+    return getTotal("assertions")
+def getTotalTestCases():
+    return getTotal("testcases")
+def getTotalTestFiles():
+    return getTotal("testfiles")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81, debug=True)
