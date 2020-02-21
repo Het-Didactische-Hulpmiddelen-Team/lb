@@ -30,6 +30,7 @@ def add_test():
     with open("xml_log", "w") as outfile:
         outfile.write(request.data)
     group = root.find("Group")
+    print(group, file=sys.stderr)
 
     # naam opzoeken
     username = group.attrib["name"]
