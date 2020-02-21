@@ -1,4 +1,4 @@
-import os, subprocess, git, requests, re
+import os, subprocess, git, requests, re,sys
 import xml.etree.ElementTree as et
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
@@ -56,7 +56,7 @@ def add_test():
 
     # insert into db
     cursor = mysql.connection.cursor()
-    cursor.execute("insert into student (name, data, assertions, testcases) values (%s, %s, %s, %s) on duplicate key update data=values(data), assertions=values(assertions), testcases=values(testcases);", (name, results, success, testcases))
+    cursor.execute("INSERT INTO student(name, data, assertions, testcases) values (%s,%s,%s,%s) ON DUPLICATE KEY UPDATE data=values(data), assertions=values(assertions), testcases=values(testcases);", (name, results, success, cases))
     mysql.connection.commit()
     cursor.close()
 
