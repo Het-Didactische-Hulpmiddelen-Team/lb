@@ -145,10 +145,12 @@ if __name__ == "__main__":
     cursor.execute("SELECT * FROM student WHERE name=\'Fréderik Vogels\';")
     res = cursor.fetchall()
     cursor.close()
-    print(res)
+    file = open("out.txt", "w")
+    file.writeline(res)
     # VERANDEREN VERANDEREN NA WEG DOEN VAN PERCENT
     assertions = res[0][3]
-    print(assertions)
+    file.writeline(assertions)
     testcases = res[0][4]
-    print(res[0][4])
+    file.writeline(res[0][4])
     tesfiles = res[0][5]
+    file.close()
