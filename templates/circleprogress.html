@@ -5,19 +5,18 @@
     {% set percent = ((data[0]|int / data[1]|int) * 100)|int %}
     <div class="progress mx-auto" data-value='{{ percent }}'>
       <span class="progress-left">
-
                     <span class="progress-bar border-danger"></span>
       </span>
       <span class="progress-right">
                     <span class="progress-bar border-danger"></span>
       </span>
       <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-        <div class="h2 font-weight-bold">{{ percent }}<sup class="small">%</sup></div> <!--percentage -->
+        <div class="h2 font-weight-bold">{{ percent }}%</div> <!--percentage -->
       </div>
     </div>
 
     <div class="row text-center mt-4">
-        <span class="small text-gray">{{data[0]}} / {{data[1]}} assertions</span>  <!-- actual, max -->
+        <span class="small text-gray text-center h2">{{data[0]}} / {{data[1]}} assertions</span>  <!-- actual, max -->
     </div>
 
   </div>
