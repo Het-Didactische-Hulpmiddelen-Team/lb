@@ -28,17 +28,17 @@
         {% endwith %}
     </ul>
 
-    <ul class="list-group mx-5" id="accordion">
+    <ul class="list-group mx-5 accordion">
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
                 <li class="list-group-item">
-                    <h3>{{key}}</h3 >
-                    <ul class="list-group" class="innerAccordion">
+                    <h3 class="toggle">{{key}}</h3 >
+                    <ul class="list-group inner">
                         {{loop(value.items())}}
                     </ul>
                 </li>   
             {%- else  %}
-                <li class="list-group-item"><p>{{value}}</p></li>
+                <li class="list-group-item inner"><p>{{value}}</p></li>
             {%- endif %}
         {%- endfor %}
     </ul>
