@@ -40,7 +40,11 @@
         {%- else  %}
                 <li class="list-group-item">
                     {{value}}
-                    <span class="float-right">&#10004;</span>
+                    <span class="float-right">
+                        {% if value in user_files%}
+                        &#10004;
+                        {% endif %}
+                    </span>
                 </li>
             {%- endif %}
         {%- endfor %}

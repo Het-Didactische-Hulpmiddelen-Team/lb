@@ -74,11 +74,7 @@ def add_test():
 
     return "success"
 
-@app.route("/student/<username>")
-def detail(username):
-    # detailpagina die de status van elke test individueel laat zien
-    name = urllib.unquote(username)
-
+def getFiles(name = 'Frédéric Vogels'):
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM student WHERE name=%s;", [str(name)] )
     res = cursor.fetchall()
@@ -92,7 +88,16 @@ def detail(username):
         if i != len(vals) - 1:
             files.append(re.sub('./tests/', "", x["filename"]) )
     files.sort()
+    return (files, res)
 
+@app.route("/student/<username>")
+def detail(username):
+    # detailpagina die de status van elke test individueel laat zien
+    name = urllib.unquote(username)
+
+    (files, res) = getFiles()
+    (userFiles, userRes) = getFiles(name)
+    
     # twee onderstaande functions dienen voor alle testfiles in een dict
     def build_nested_helper(path, text, container):
         segs = path.split('/')
@@ -112,14 +117,15 @@ def detail(username):
         return container
     ul = build_nested(files)
 
-    assertions_data = (res[0][2], getTotalAssertions())
-    testcases_data = (res[0][3], getTotalTestCases())
-    testfiles_data = (res[0][4], getTotalTestFiles())
+    assertions_data = (userRes[0][2], res[0][2])
+    testcases_data = (userRes[0][3], res[0][3])
+    testfiles_data = (userRes[0][4], res[0][4])
 
     return render_template("detail.html", name=name, ul=ul,
                            assertions_data=assertions_data,
                            testcases_data=testcases_data,
-                           testfiles_data=testfiles_data)
+                           testfiles_data=testfiles_data,
+                           user_files=userFiles)
 
 @app.route("/hook", methods=["POST"])
 def hook():
