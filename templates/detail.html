@@ -28,17 +28,17 @@
         {% endwith %}
     </div>
 
-    <ul class="d-flex flex-row justify-content-center">
+    <ul class="d-flex flex-row justify-content-center list-group">
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
-                <li>
+                <li class="list-group-item">
                     <span>{{key}}</span>
-                    <ul>
+                    <ul class="list-group">
                         {{loop(value.items())}}
                     </ul>
                 </li>   
             {%- else  %}
-                <li>{{value}}</li>
+                <li class="list-group-item">{{value}}</li>
             {%- endif %}
         {%- endfor %}
     </ul>
