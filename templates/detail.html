@@ -40,12 +40,11 @@
         {%- else  %}
                 <li class="list-group-item">
                     {{value}}
-                    {{user_files}}
                     <span class="float-right">
                         {% if (value in user_files) %}
                         &#10004;
                         {% else %}
-                        kronk
+                        &times;
                         {% endif %}
                     </span>
                 </li>
