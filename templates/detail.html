@@ -40,13 +40,15 @@
         {%- else  %}
                 <li class="list-group-item">
                     {{value}}
+                    {% if (value in user_files) %}
                     <span class="float-right">
-                        {% if (value in user_files) %}
                         &#10004;
-                        {% else %}
-                        &times;
-                        {% endif %}
                     </span>
+                    {% else %}
+                    <span class="float-right text-danger h2">
+                        &times;
+                    </span>
+                    {% endif %}
                 </li>
             {%- endif %}
         {%- endfor %}
