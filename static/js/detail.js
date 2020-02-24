@@ -1,5 +1,6 @@
 $(function() {
   $( "#accordion" ).accordion();
+  $( ".innerAccordion" ).accordion();
   $(".progress").each(function() {
     var value = $(this).attr('data-value');
     var left = $(this).find('.progress-left .progress-bar');

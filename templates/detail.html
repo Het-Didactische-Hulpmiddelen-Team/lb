@@ -33,7 +33,7 @@
             {%-if not ".cpp" in key %}
                 <li class="list-group-item">
                     <h3>{{key}}</h3 >
-                    <ul class="list-group">
+                    <ul class="list-group" class="innerAccordion">
                         {{loop(value.items())}}
                     </ul>
                 </li>   
