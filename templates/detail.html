@@ -28,12 +28,12 @@
         {% endwith %}
     </ul>
 
-    <ul class="list-group mx-5">
+    <ul class="list-group mx-5" id="accordion">
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
-                <li class="list-group-item" data-toggle="collapse" data-target=".collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h3 class="collapse show collapseOne" aria-labelledby="headingOne" data-parent="#accordion">{{key}}</h3 >
-                    <ul class="list-group collapse show collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
+                <li class="list-group-item">
+                    <h3>{{key}}</h3 >
+                    <ul class="list-group">
                         {{loop(value.items())}}
                     </ul>
                 </li>   
