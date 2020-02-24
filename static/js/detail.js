@@ -13,7 +13,7 @@ $(function() {
         left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
       }
     }
-  })
+  });
 
   function percentageToDegrees(percentage) {
     return percentage / 100 * 360
