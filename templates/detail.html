@@ -31,13 +31,13 @@
     <ul class="list-group mx-5 accordion">
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
-                <li class="list-group-item">
+                <li class="list-group-item bg-light o-green">
                     <h3 class="toggle">{{key}}</h3 >
                     <ul class="list-group inner">
                         {{loop(value.items())}}
                     </ul>
-                </li>   
-            {%- else  %}
+                </li>
+        {%- else  %}
                 <li class="list-group-item">
                     {{value}}
                 </li>

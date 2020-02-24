@@ -85,3 +85,11 @@
 .inner {
   display: none;
 }
+
+.o-green {
+  background-color: rgba(40,167,69,0.39) !important;
+}
+
+.o-red {
+  background-color: rgba(220,53,69,0.39) !important;
+}
