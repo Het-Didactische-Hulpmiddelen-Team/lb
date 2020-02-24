@@ -11,8 +11,8 @@
 {% endif %}
 <div class="col-xl-3 col-lg-6 mb-4">
   <div class="bg-white rounded-lg p-5 shadow">
-    <h2 class="h6 font-weight-bold text-center mb-4">{{text}}</h2> <!--text -->
-    <div class="progress mx-auto" data-value='{{ percent }}'>
+    <h2 class="h3 font-weight-bold text-center my-4">{{text}}</h2> <!--text -->
+    <div class="progress mx-auto mb-4" data-value='{{ percent }}'>
       <span class="progress-left">
                     <span class="progress-bar {{ color }}"></span>
       </span>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <span class="small text-gray text-center h2 mt-4 row">{{data[0]}} / {{data[1]}} assertions</span>  <!-- actual, max -->
+    <span class="text-center h4 mb-4">{{data[0]}} / {{data[1]}} assertions</span>  <!-- actual, max -->
 
   </div>
 </div>
