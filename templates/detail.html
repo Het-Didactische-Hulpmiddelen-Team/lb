@@ -13,7 +13,7 @@
 <body>
     <h1 class="m-5 text-center">PVM Tests van {{name}}</h1>
 
-    <div class="d-flex flex-row justify-content-around">
+    <ul class="d-flex flex-row justify-content-around list-unstyled">
         <!-- data = (actual, max) -->
         {% with data=assertions_data, text="Assertions" %}
             {% include 'circleprogress.html' %}
@@ -26,7 +26,7 @@
         {% with data=testfiles_data, text="Test Files" %}
             {% include 'circleprogress.html' %}
         {% endwith %}
-    </div>
+    </ul>
 
     <ul class="list-group mx-5">
         {%- for key, value in ul.items() recursive%}
