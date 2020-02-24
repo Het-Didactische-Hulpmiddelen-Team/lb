@@ -28,7 +28,7 @@
         {% endwith %}
     </div>
 
-    <ul class="d-flex flex-row justify-content-center list-group">
+    <ul class="list-group">
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
                 <li class="list-group-item">
