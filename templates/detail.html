@@ -32,13 +32,13 @@
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
                 <li class="list-group-item">
-                    <span>{{key}}</span>
+                    <h3>{{key}}</h3>
                     <ul class="list-group">
                         {{loop(value.items())}}
                     </ul>
                 </li>   
             {%- else  %}
-                <li class="list-group-item">{{value}}</li>
+                <li class="list-group-item"><p>{{value}}</p></li>
             {%- endif %}
         {%- endfor %}
     </ul>
