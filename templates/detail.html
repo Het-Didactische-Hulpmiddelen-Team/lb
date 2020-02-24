@@ -38,7 +38,11 @@
                     </ul>
                 </li>   
             {%- else  %}
-                <li class="list-group-item inner"><p>{{value}}</p></li>
+                <li class="list-group-item">
+                    <div class="inner">
+                        <p>{{value}}</p>
+                    </div>
+                </li>
             {%- endif %}
         {%- endfor %}
     </ul>
