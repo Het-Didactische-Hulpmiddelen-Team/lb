@@ -120,7 +120,7 @@ def detail(username):
     assertions_data = (userRes[0][2], res[0][2])
     testcases_data = (userRes[0][3], res[0][3])
     testfiles_data = (userRes[0][4], res[0][4])
-    user_files = [x.split("/")[-1] for x in user_files]
+    userFiles = [x.split("/")[-1] for x in userFiles]
     return render_template("detail.html", name=name, ul=ul,
                            assertions_data=assertions_data,
                            testcases_data=testcases_data,
