@@ -84,9 +84,11 @@
 */
 .inner {
   display: none;
-  cursor: pointer;
 }
 
+.toggle {
+  cursor: pointer;
+}
 .o-green {
   background-color: rgba(40,167,69,0.39) !important;
 }
