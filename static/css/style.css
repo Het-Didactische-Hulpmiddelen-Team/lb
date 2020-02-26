@@ -75,6 +75,10 @@
   left: 0;
 }
 
+i.fas {
+  line-height: 27px;
+}
+
 /*
 *
 * ==========================================
@@ -86,6 +90,9 @@
   display: none;
 }
 
+.toggle {
+  cursor: pointer;
+}
 .o-green {
   background-color: rgba(40,167,69,0.39) !important;
 }

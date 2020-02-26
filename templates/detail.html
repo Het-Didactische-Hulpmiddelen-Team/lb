@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/fontawesome.min.js" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -28,7 +27,7 @@
         {% endwith %}
     </ul>
 
-    <ul class="list-group mx-5 accordion">
+    <ul class="list-group mx-5 accordion shadow">
         {%- for key, value in ul.items() recursive%}
             {%-if not ".cpp" in key %}
                 <li class="list-group-item bg-light">
@@ -55,6 +54,7 @@
     </ul>
     <script type="text/javascript" src="../static/js/jquery.js"></script>
     <script type="text/javascript" src="../static/js/jqueryui.js"></script>
+    <script src="https://kit.fontawesome.com/890bdd61e5.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous">
