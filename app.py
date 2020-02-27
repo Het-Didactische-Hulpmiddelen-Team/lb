@@ -4,6 +4,7 @@ import urllib.parse as urllib
 from flask import Flask, render_template, request, jsonify, json
 from flask_mysqldb import MySQL
 
+# MySQL config
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'dht'
 app.config['MYSQL_PASSWORD'] = 'mvghetdhtmvghetdht'
