@@ -1,4 +1,4 @@
-import os, subprocess, git, requests, re,sys
+import os, subprocess, git, requests, re, sys
 import xml.etree.ElementTree as et
 import urllib.parse as urllib
 from flask import Flask, render_template, request, jsonify, json
@@ -116,17 +116,19 @@ def detail(username):
         for path in paths:
             build_nested_helper(path, path, container)
         return container
-    ul = build_nested(files)
+
+    all_files = build_nested(files)
 
     assertions_data = (userRes[0][2], res[0][2])
     testcases_data = (userRes[0][3], res[0][3])
     testfiles_data = (userRes[0][4], res[0][4])
     userFiles = [x.split("/")[-1] for x in userFiles]
-    return render_template("detail.html", name=name, ul=ul,
-                           assertions_data=assertions_data,
-                           testcases_data=testcases_data,
-                           testfiles_data=testfiles_data,
-                           user_files=userFiles)
+    return render_template("detail.html", name=name,
+                        all_files=all_files,
+                        assertions_data=assertions_data,
+                        testcases_data=testcases_data,
+                        testfiles_data=testfiles_data,
+                        user_files=userFiles)
 
 @app.route("/hook", methods=["POST"])
 def hook():
