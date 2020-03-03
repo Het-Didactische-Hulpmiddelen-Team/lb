@@ -7,8 +7,33 @@ Before setting up this webserver make sure you have these pip packages installed
 * flask
 * flask_mysqldb
 
-## Database
-You can change the database used in lines 9 - 13.
+# Database
+You can change the database used in lines 9 - 13in app.py.
+
+This is the MySQL syntax to setup the tables needed:
+```sql
+CREATE DATABASE lb;
+use lb;
+CREATE TABLE student(
+    name VARCHAR(50) PRIMARY KEY,
+    data JSON,
+    assertions INT,
+    testcases INT,
+    testfiles INT
+)
+```
+
+# IMPORTANT
+You are supposed to have a record in the DB that has info about the max amount of testcases/assertions present. This can be done in 2 ways:
+- By using GTN: You will first have to 'link' your githubname to the name 'Frédéric Vogels' (changeable in code) before pushing a !finished! project to the organisation in a repo under your github account. The server will run tests and enter this record into the database
+```
+'Frédéric Vogels' | //some-json// | totalAssertions | totalTestCases | totalTestFiles
+```
+- By adding a record to the database with this MySQL syntax:
+```sql
+INSERT INTO student(name, data, assertions, testcases, testfiles) VALUES
+('Frédéric Vogels', NULL, <totalAssertions>, <totalCases>, <totalTestFiles>);
+```
 
 # Routes
 * "/" : Shows the index.html page which includes a list of the progress of all students
