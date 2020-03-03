@@ -7,6 +7,9 @@ Before setting up this webserver make sure you have these pip packages installed
 * flask
 * flask_mysqldb
 
+# GITHUB
+in the settings of the organisations you want to add the "/hook" route to the webhooks.
+
 # Database
 You can change the database used in lines 9 - 13in app.py.
 
