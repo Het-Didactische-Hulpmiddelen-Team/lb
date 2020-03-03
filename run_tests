@@ -1,0 +1,28 @@
+#!/bin/bash
+
+repo=$1
+echo $repo
+proj_path="/root/eindwerk/lb_repos/${1}/midi-project/src/midi/"
+echo $proj_path
+url="http://localhost:81/test/add"
+
+cd $proj_path
+echo "Compiling code"
+g++ -c -std=gnu++14 -I. -D "TEST_BUILD" $(find . -type f -iregex ".*\.cpp")
+echo "Linking compiled objects"
+g++ -g -o .test-output *.o
+echo "Running tests"
+./.test-output -r xml > .test-results
+sed -i.bak "s/.test-output/${repo}/" .test-results
+filecount=$(find . -maxdepth 1 -name "*-tests.o" -printf '.' | wc -m)
+xmlstarlet ed -O --inplace --insert "/Catch/OverallResults" --type attr -n compiledFiles -v $filecount .test-results
+sed -i.bak 's/\<expectedFailures="[[:digit:]]\+"\>/& ${f}/' .test-results
+echo "Pushing results to ${url}"
+curl -i \
+-H "Accept: application/xml" \
+-H "Content-Type:application/xml" \
+-X POST -d @.test-results $url
+echo "Results also saved in ${proj_path}.test-results"
+echo "Cleaning up"
+rm *.o
+rm .test*
