@@ -28,7 +28,7 @@
     </ul>
 
     <ul class="list-group mx-5 accordion shadow">
-        {%- for key, value in ul.items() recursive%}
+        {%- for key, value in all_files.items() recursive%}
             {%-if not ".cpp" in key %}
                 <li class="list-group-item bg-light">
                     <h3 class="toggle">{{key}}</h3 >
