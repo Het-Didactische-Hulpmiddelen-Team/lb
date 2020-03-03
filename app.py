@@ -12,6 +12,11 @@ app.config['MYSQL_DB'] = 'lb'
 app.config['MYSQL_HOST'] = 'localhost'
 mysql = MySQL(app)
 
+pathToGTN = "http://localhost:82"
+pathToRepos = "../lb_repos/"
+pathToTestFile = "/root/eindwerk/lb_repos/run_tests"
+portnr = 81
+
 @app.route("/")
 def index():
     # compleet overzicht van alle studenten met hun percentage geslaagde tests
@@ -41,7 +46,7 @@ def add_test():
     # naam opzoeken
     username = group.attrib["name"]
     name = username
-    url = "http://localhost:82/user/%s" % username
+    url = pathToGTN +"/user/%s" % username
     rq = requests.get(url=url)
     if rq.text != "[]":
         data = json.loads(rq.text)
@@ -139,7 +144,7 @@ def hook():
     data = request.data
     url = json.loads(data)["repository"]["url"]
     name = json.loads(data)["repository"]["name"]
-    path = "../lb_repos/"
+    path = pathToRepos
 
     if os.path.exists(path+name):
         git.Git(path+name).pull(url)
@@ -147,7 +152,7 @@ def hook():
         git.Git(path).clone(url)
 
     #tests rerunnen
-    rc = subprocess.call(["/root/eindwerk/lb_repos/run_tests", str(name)])
+    rc = subprocess.call([pathToTestFile, str(name)])
     return "success"
 
 def getTotal(param):
@@ -164,4 +169,4 @@ def getTotalTestFiles():
     return getTotal("testfiles")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=81, debug=True)
+    app.run(host="0.0.0.0", port=portnr, debug=True)

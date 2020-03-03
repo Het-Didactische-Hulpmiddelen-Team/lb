@@ -17,8 +17,13 @@ You can change the database used in lines 9 - 13.
 * "/hook" : Don't use this route, this is intended for requests comming from Github.
 
 # Additional setup
-- On line 44 a url is specified that points to the GTN service (more info on this can be found in our 'gtn' project). You can either point it to your own webapp running the GTN software or remove lines 44 - 49 all together.
-- On line 142 a path variable is declared which you can change to fit your needs. This is where the students' repos will be clones to. We strongly advise you to not change this to eliminate potential errors in the script that runs the tests for the repos.
+- On line 15 a url is specified that points to the GTN service (more info on this can be found in our 'gtn' project). You can either point it to your own webapp running the GTN software or remove lines 44 - 49 all together.
+- On line 16 a path variable is declared which you can change to fit your needs. This is where the students' repos will be clones to. We strongly advise you to not change this to eliminate potential errors in the script that runs the actual tests for the repos.
 - If you didn't change the path in the previous step you should make sure there is a folder in the filesystem on that location ('../lb_repos/')
-- On line 150 a path to the script that runs the tests is specified.
+- Into the folder created in the previous step you want to copy the 'run_tests' script
+```
+cp run_tests ../lb_repos/
+```
+- On line 17 a path to the script that runs the tests is specified. Change this to the correct folder.
+- On line 18 can be found the variable to change the portnr the server runs on.
 
