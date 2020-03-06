@@ -7,11 +7,11 @@ Before setting up this webserver make sure you have these pip packages installed
 * flask
 * flask_mysqldb
 
-# GITHUB
+# Github
 in the settings of the organisations you want to add the "/hook" route to the webhooks.
 
 # Database
-You can change the database used in lines 9 - 13in app.py.
+You can change the database used in lines 9 - 13 in app.py.
 
 This is the MySQL syntax to setup the tables needed:
 ```sql
@@ -32,7 +32,7 @@ You are supposed to have a record in the DB that has info about the max amount o
 ```
 'Frédéric Vogels' | //some-json// | totalAssertions | totalTestCases | totalTestFiles
 ```
-- By adding a record to the database with this MySQL syntax:
+- By adding a rec ord to the database with this MySQL syntax:
 ```sql
 INSERT INTO student(name, data, assertions, testcases, testfiles) VALUES
 ('Frédéric Vogels', NULL, <totalAssertions>, <totalCases>, <totalTestFiles>);
@@ -44,7 +44,7 @@ INSERT INTO student(name, data, assertions, testcases, testfiles) VALUES
 * "/student/-username-" : Surfing to this route will show the user the individual progress for a student. A more in depth look in which tests are failing is given here.
 * "/hook" : Don't use this route, this is intended for requests comming from Github.
 
-# Additional setup
+# Additional config
 - On line 15 a url is specified that points to the GTN service (more info on this can be found in our 'gtn' project). You can either point it to your own webapp running the GTN software or remove lines 44 - 49 all together.
 - On line 16 a path variable is declared which you can change to fit your needs. This is where the students' repos will be clones to. We strongly advise you to not change this to eliminate potential errors in the script that runs the actual tests for the repos.
 - If you didn't change the path in the previous step you should make sure there is a folder in the filesystem on that location ('../lb_repos/')
